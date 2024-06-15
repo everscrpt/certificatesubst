@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('123456'),
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
     }
 }

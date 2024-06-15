@@ -3,70 +3,70 @@
  * This file contains the MailWizzApi_Http_Response class used in the MailWizzApi PHP-SDK.
  *
  * @author Serban George Cristian <cristian.serban@mailwizz.com>
+ *
  * @link https://www.mailwizz.com/
+ *
  * @copyright 2013-2020 https://www.mailwizz.com/
  */
- 
- 
+
 /**
  * MailWizzApi_Http_Response is the class used to get the responses back from the API endpoints.
  *
  * @author Serban George Cristian <cristian.serban@mailwizz.com>
- * @package MailWizzApi
- * @subpackage Http
+ *
  * @since 1.0
  */
 class MailWizzApi_Http_Response extends MailWizzApi_Base
 {
     /**
-     * @var string $url the url from where the response came back.
+     * @var string the url from where the response came back.
      */
     public $url;
-    
+
     /**
-     * @var MailWizzApi_Params $headers the headers that came back in the response.
+     * @var MailWizzApi_Params the headers that came back in the response.
      */
     public $headers;
-    
+
     /**
-     * @var string $contentType the content type of the response.
+     * @var string the content type of the response.
      */
     public $contentType;
 
     /**
-     * @var string $httpMessage the returned http message.
+     * @var string the returned http message.
      */
     public $httpMessage;
-    
+
     /**
-     * @var int $curlCode the curl response code.
+     * @var int the curl response code.
      */
     public $curlCode = 0;
-    
+
     /**
-     * @var string $curlMessage the curl response message.
+     * @var string the curl response message.
      */
     public $curlMessage;
-    
+
     /**
-     * @var bool $storeCurlInfo whether to store the curl info from the response.
+     * @var bool whether to store the curl info from the response.
      */
     public $storeCurlInfo = false;
-    
+
     /**
-     * @var MailWizzApi_Params $curlInfo the curl info returned in the response.
+     * @var MailWizzApi_Params the curl info returned in the response.
      */
     public $curlInfo;
-    
+
     /**
-     * @var MailWizzApi_Params $body the body of the response.
+     * @var MailWizzApi_Params the body of the response.
      */
     public $body;
-    
+
     /**
      * @var array the list of http status codes definitions.
      */
-    public static $statusTexts = array(
+    public static $statusTexts = [
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing',            // RFC2518
@@ -127,13 +127,13 @@ class MailWizzApi_Http_Response extends MailWizzApi_Base
         508 => 'Loop Detected',                                               // RFC5842
         510 => 'Not Extended',                                                // RFC2774
         511 => 'Network Authentication Required',                             // RFC6585
-    );
-    
+    ];
+
     /**
      * @var MailWizzApi_Http_Request
      */
     public $request;
-    
+
     /**
      * @var int the returned http code.
      */
@@ -142,7 +142,6 @@ class MailWizzApi_Http_Response extends MailWizzApi_Base
     /**
      * Contructor.
      *
-     * @param MailWizzApi_Http_Request $request
      *
      * @throws ReflectionException
      */
@@ -151,20 +150,21 @@ class MailWizzApi_Http_Response extends MailWizzApi_Base
         // $this->request = $request;
         $this->populate($request->params->toArray());
     }
-    
+
     /**
      * Set the http code and http message based on the received response
      *
-     * @param int $code
+     * @param  int  $code
      * @return MailWizzApi_Http_Response
      */
     public function setHttpCode($code)
     {
-        $this->_httpCode = $code = (int)$code;
+        $this->_httpCode = $code = (int) $code;
         $this->httpMessage = isset(self::$statusTexts[$code]) ? self::$statusTexts[$code] : null;
+
         return $this;
     }
-    
+
     /**
      * Get the received http code.
      *
@@ -182,9 +182,9 @@ class MailWizzApi_Http_Response extends MailWizzApi_Base
      */
     public function getIsCurlError()
     {
-        return (int)$this->curlCode > 0;
+        return (int) $this->curlCode > 0;
     }
-    
+
     /**
      * Whether the response contains a http error.
      *
@@ -192,9 +192,9 @@ class MailWizzApi_Http_Response extends MailWizzApi_Base
      */
     public function getIsHttpError()
     {
-        return (int)$this->_httpCode < 200 || (int)$this->_httpCode >= 300;
+        return (int) $this->_httpCode < 200 || (int) $this->_httpCode >= 300;
     }
-    
+
     /**
      * Whether the response is successful.
      *
@@ -204,7 +204,7 @@ class MailWizzApi_Http_Response extends MailWizzApi_Base
     {
         return $this->getIsCurlError() === false && $this->getIsHttpError() === false;
     }
-    
+
     /**
      * Whether the response is not successful
      *
@@ -214,7 +214,7 @@ class MailWizzApi_Http_Response extends MailWizzApi_Base
     {
         return $this->getIsSuccess() === false;
     }
-    
+
     /**
      * If there is a http error or a curl error, retrieve the error message.
      *
@@ -225,14 +225,14 @@ class MailWizzApi_Http_Response extends MailWizzApi_Base
         if ($this->getIsCurlError()) {
             return $this->curlMessage;
         }
-        
+
         if ($this->getIsHttpError()) {
             return $this->httpMessage;
         }
-        
+
         return null;
     }
-    
+
     /**
      * If there is a http error or a curl error, retrieve the error code.
      *
@@ -243,29 +243,30 @@ class MailWizzApi_Http_Response extends MailWizzApi_Base
         if ($this->getIsCurlError()) {
             return $this->curlCode;
         }
-        
+
         if ($this->getIsHttpError()) {
             return $this->_httpCode;
         }
-        
+
         return false;
     }
 
     /**
      * Calls all the setters and populate the class based on the given array.
      *
-     * @param array $params
      *
      * @return MailWizzApi_Http_Response
+     *
      * @throws ReflectionException
      */
-    public function populate(array $params = array())
+    public function populate(array $params = [])
     {
         if ($this->storeCurlInfo) {
             $this->curlInfo = new MailWizzApi_Params($params);
         }
 
         $this->populateFromArray($params);
+
         return $this;
     }
 }

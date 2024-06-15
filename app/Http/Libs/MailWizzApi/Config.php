@@ -3,18 +3,19 @@
  * This file contains the configuration class for the MailWizzApi PHP-SDK.
  *
  * @author Serban George Cristian <cristian.serban@mailwizz.com>
+ *
  * @link https://www.mailwizz.com/
+ *
  * @copyright 2013-2020 https://www.mailwizz.com/
  */
- 
- 
+
 /**
  * MailWizzApi_Config contains the configuration class that is injected at runtime into the main application.
  *
  * It's only purpose is to set the needed data so that the API calls will run without problems.
  *
  * @author Serban George Cristian <cristian.serban@mailwizz.com>
- * @package MailWizzApi
+ *
  * @since 1.0
  */
 class MailWizzApi_Config extends MailWizzApi_Base
@@ -23,7 +24,7 @@ class MailWizzApi_Config extends MailWizzApi_Base
      * @var string the api public key
      */
     public $publicKey;
-    
+
     /**
      * @var string the api private key.
      */
@@ -33,7 +34,7 @@ class MailWizzApi_Config extends MailWizzApi_Base
      * @var string the preffered charset.
      */
     public $charset = 'utf-8';
-    
+
     /**
      * @var string the API url.
      */
@@ -42,11 +43,11 @@ class MailWizzApi_Config extends MailWizzApi_Base
     /**
      * Constructor
      *
-     * @param array $config the config array that will populate the class properties.
+     * @param  array  $config  the config array that will populate the class properties.
      *
      * @throws ReflectionException
      */
-    public function __construct(array $config = array())
+    public function __construct(array $config = [])
     {
         $this->populateFromArray($config);
     }
@@ -59,18 +60,19 @@ class MailWizzApi_Config extends MailWizzApi_Base
      *
      * Also, a basic url check is done, but you need to make sure the url is valid.
      *
-     * @param mixed $url
-     *
+     * @param  mixed  $url
      * @return MailWizzApi_Config
+     *
      * @throws Exception
      */
     public function setApiUrl($url)
     {
-        if (!parse_url($url, PHP_URL_HOST)) {
+        if (! parse_url($url, PHP_URL_HOST)) {
             throw new Exception('Please set a valid api base url.');
         }
 
-        $this->_apiUrl = trim($url, '/') . '/';
+        $this->_apiUrl = trim($url, '/').'/';
+
         return $this;
     }
 
@@ -79,9 +81,9 @@ class MailWizzApi_Config extends MailWizzApi_Base
      *
      * Also, you can use the $endpoint param to point the request to a certain endpoint.
      *
-     * @param string $endpoint
-     *
+     * @param  string  $endpoint
      * @return string
+     *
      * @throws Exception
      */
     public function getApiUrl($endpoint = null)
@@ -89,7 +91,7 @@ class MailWizzApi_Config extends MailWizzApi_Base
         if ($this->_apiUrl === null) {
             throw new Exception('Please set the api base url.');
         }
-        
-        return $this->_apiUrl . $endpoint;
+
+        return $this->_apiUrl.$endpoint;
     }
 }

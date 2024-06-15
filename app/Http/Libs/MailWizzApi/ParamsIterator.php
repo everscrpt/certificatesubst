@@ -3,7 +3,9 @@
  * CMapIterator class file.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
+ *
  * @link http://www.yiiframework.com/
+ *
  * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
@@ -14,7 +16,7 @@
  * It allows CMap to return a new iterator for traversing the items in the map.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @package system.collections
+ *
  * @since 1.0
  */
 
@@ -24,9 +26,11 @@
  * It allows MailWizzApi_Params to return a new iterator for traversing the items in the map.
  *
  * @author Serban George Cristian
+ *
  * @link http://www.mailwizz.com
+ *
  * @copyright 2013-2020 https://www.mailwizz.com/
- * @package MailWizzApi
+ *
  * @since 1.0
  *
  * Implementation based on CMapIterator class file from the Yii framework.
@@ -38,12 +42,12 @@ class MailWizzApi_ParamsIterator implements Iterator
      * @var array the data to be iterated through
      */
     private $_data;
-    
+
     /**
      * @var array list of keys in the map
      */
     private $_keys;
-    
+
     /**
      * @var mixed current key
      */
@@ -51,11 +55,12 @@ class MailWizzApi_ParamsIterator implements Iterator
 
     /**
      * Constructor.
-     * @param array $data the data to be iterated through
+     *
+     * @param  array  $data  the data to be iterated through
      */
     public function __construct(&$data)
     {
-        $this->_data =& $data;
+        $this->_data = &$data;
         $this->_keys = array_keys($data);
         $this->_key = reset($this->_keys);
     }
@@ -74,6 +79,7 @@ class MailWizzApi_ParamsIterator implements Iterator
     /**
      * Returns the key of the current array element.
      * This method is required by the interface Iterator.
+     *
      * @return mixed the key of the current array element
      */
     public function key()
@@ -84,6 +90,7 @@ class MailWizzApi_ParamsIterator implements Iterator
     /**
      * Returns the current array element.
      * This method is required by the interface Iterator.
+     *
      * @return mixed the current array element
      */
     public function current()
@@ -105,7 +112,8 @@ class MailWizzApi_ParamsIterator implements Iterator
     /**
      * Returns whether there is an element at current position.
      * This method is required by the interface Iterator.
-     * @return boolean
+     *
+     * @return bool
      */
     public function valid()
     {

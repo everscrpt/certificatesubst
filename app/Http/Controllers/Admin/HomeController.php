@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
 use App\Model\Post;
 use App\Model\Setting;
 
@@ -25,19 +25,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // Get Pages 
+        // Get Pages
         // $pages = Post::with('media')->where(['post_type'=>'page','post_status'=>'published'])->get();
 
-        // OCN 
+        // OCN
 
-        $home_data = Setting::select('value')->where(['key'=> 'home_ocn'])->first();
+        $home_data = Setting::select('value')->where(['key' => 'home_ocn'])->first();
 
         $home_ocn = json_decode($home_data->value);
 
-        $search_data = Setting::select('value')->where(['key'=> 'search_ocn'])->first();
+        $search_data = Setting::select('value')->where(['key' => 'search_ocn'])->first();
 
         $search_ocn = json_decode($search_data->value);
 
-        return view('admin.dashboard',compact('home_ocn','search_ocn'));
+        return view('admin.dashboard', compact('home_ocn', 'search_ocn'));
     }
 }

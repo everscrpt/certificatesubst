@@ -3,11 +3,12 @@
  * This file contains the autoloader class for the MailWizzApi PHP-SDK.
  *
  * @author Serban George Cristian <cristian.serban@mailwizz.com>
+ *
  * @link https://www.mailwizz.com/
+ *
  * @copyright 2013-2020 https://www.mailwizz.com/
  */
- 
- 
+
 /**
  * The MailWizzApi Autoloader class.
  *
@@ -25,7 +26,7 @@
  * </pre>
  *
  * @author Serban George Cristian <cristian.serban@mailwizz.com>
- * @package MailWizzApi
+ *
  * @since 1.0
  */
 class MailWizzApi_Autoloader
@@ -33,7 +34,7 @@ class MailWizzApi_Autoloader
     /**
      * The registrable autoloader
      *
-     * @param string $class
+     * @param  string  $class
      * @return void
      */
     public static function autoloader($class)
@@ -41,13 +42,13 @@ class MailWizzApi_Autoloader
         if (strpos($class, 'MailWizzApi') === 0) {
             $className = str_replace('_', '/', $class);
             $className = substr($className, 12);
-            
-            if (is_file($classFile = dirname(__FILE__) . '/'. $className.'.php')) {
-                require_once($classFile);
+
+            if (is_file($classFile = dirname(__FILE__).'/'.$className.'.php')) {
+                require_once $classFile;
             }
         }
     }
-    
+
     /**
      * Registers the MailWizzApi_Autoloader::autoloader()
      *

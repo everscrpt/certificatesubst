@@ -25,8 +25,8 @@ class CreatePostsTable extends Migration
             $table->char('post_status', 64)->default('draft');
             $table->char('comment_status', 16)->default('open');
             $table->bigInteger('post_parent')->nullable();
-            $table->char('post_type',32)->nullable('post');
-            $table->char('post_mime_type',32)->nullable();
+            $table->char('post_type', 32)->nullable('post');
+            $table->char('post_mime_type', 32)->nullable();
             $table->integer('comment_count')->default(0);
             $table->timestamps();
         });

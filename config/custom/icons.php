@@ -1,4 +1,5 @@
 <?php
+
 return [
     'icons' => [
         '0' => 'fa fa-universal-access',
@@ -16,7 +17,7 @@ return [
         '12' => 'fa fa-cogs',
         '13' => 'fa fa-bullhorn',
         '14' => 'fa fa-users',
-        '15' => 'fa fa-leanpub'
+        '15' => 'fa fa-leanpub',
     ],
 
 ];

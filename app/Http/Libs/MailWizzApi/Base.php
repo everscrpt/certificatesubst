@@ -3,16 +3,17 @@
  * This file contains the base class for the MailWizzApi PHP-SDK.
  *
  * @author Serban George Cristian <cristian.serban@mailwizz.com>
+ *
  * @link https://www.mailwizz.com/
+ *
  * @copyright 2013-2020 https://www.mailwizz.com/
  */
- 
- 
+
 /**
  * MailWizzApi_Base is the base class for all the other classes used in the sdk.
  *
  * @author Serban George Cristian <cristian.serban@mailwizz.com>
- * @package MailWizzApi
+ *
  * @since 1.0
  */
 class MailWizzApi_Base
@@ -21,38 +22,37 @@ class MailWizzApi_Base
      * Marker for before send request event
      */
     const EVENT_BEFORE_SEND_REQUEST = 'beforeSendRequest';
-    
+
     /**
      * Marker for after send request event
      */
     const EVENT_AFTER_SEND_REQUEST = 'afterSendRequest';
-    
+
     /**
      * @var MailWizzApi_Config the configuration object injected into the application at runtime
      */
     private static $_config;
-    
+
     /**
      * @var MailWizzApi_Params the package registry that will hold various components
      */
     private static $_registry;
-    
+
     /**
      * @var MailWizzApi_Params the registered event handlers
      */
     private static $_eventHandlers;
-    
+
     /**
      * Inject the configuration into the sdk
      *
-     * @param MailWizzApi_Config $config
      * @return void
      */
     public static function setConfig(MailWizzApi_Config $config)
     {
         self::$_config = $config;
     }
-    
+
     /**
      * Returns the configuration object
      *
@@ -66,15 +66,16 @@ class MailWizzApi_Base
     /**
      * Add a new component to the registry
      *
-     * @param string $key
-     * @param mixed $value
-     *
+     * @param  string  $key
+     * @param  mixed  $value
      * @return MailWizzApi_Base
+     *
      * @throws Exception
      */
     public function addToRegistry($key, $value)
     {
         $this->getRegistry()->add($key, $value);
+
         return $this;
     }
 
@@ -82,13 +83,15 @@ class MailWizzApi_Base
      * Get the current registry object
      *
      * @return MailWizzApi_Params
+     *
      * @throws Exception
      */
     public function getRegistry()
     {
-        if (!(self::$_registry instanceof MailWizzApi_Params)) {
-            self::$_registry = new MailWizzApi_Params(is_array(self::$_registry) ? self::$_registry : array());
+        if (! (self::$_registry instanceof MailWizzApi_Params)) {
+            self::$_registry = new MailWizzApi_Params(is_array(self::$_registry) ? self::$_registry : []);
         }
+
         return self::$_registry;
     }
 
@@ -111,9 +114,9 @@ class MailWizzApi_Base
      * Please note, if a named component exists, and you assign one with the same name,
      * it will get overriden by the second one.
      *
-     * @param array $components
      *
      * @return MailWizzApi_Base
+     *
      * @throws Exception
      */
     public function setComponents(array $components)
@@ -121,6 +124,7 @@ class MailWizzApi_Base
         foreach ($components as $componentName => $config) {
             $this->setComponent($componentName, $config);
         }
+
         return $this;
     }
 
@@ -140,10 +144,10 @@ class MailWizzApi_Base
      * Please note, if a named component exists, and you assign one with the same name,
      * it will get overriden by the second one.
      *
-     * @param string $componentName the name of the component accessed later via $context->componentName
-     * @param array $config the component configuration array
-     *
+     * @param  string  $componentName  the name of the component accessed later via $context->componentName
+     * @param  array  $config  the component configuration array
      * @return MailWizzApi_Base
+     *
      * @throws ReflectionException
      * @throws Exception
      */
@@ -167,6 +171,7 @@ class MailWizzApi_Base
             }
         }
         $this->addToRegistry($componentName, $component);
+
         return $this;
     }
 
@@ -185,19 +190,20 @@ class MailWizzApi_Base
      * );
      * </pre>
      *
-     * @param array $eventHandlers
      *
      * @return MailWizzApi_Base
+     *
      * @throws Exception
      */
     public function setEventHandlers(array $eventHandlers)
     {
         foreach ($eventHandlers as $eventName => $callback) {
-            if (empty($callback) || !is_array($callback)) {
+            if (empty($callback) || ! is_array($callback)) {
                 continue;
             }
-            if (!is_array($callback[0]) && is_callable($callback)) {
+            if (! is_array($callback[0]) && is_callable($callback)) {
                 $this->getEventHandlers($eventName)->add(null, $callback);
+
                 continue;
             }
             if (is_array($callback[0])) {
@@ -208,41 +214,43 @@ class MailWizzApi_Base
                 }
             }
         }
+
         return $this;
     }
 
     /**
      * Return a list of callbacks/event handlers for the given event
      *
-     * @param string $eventName
-     *
+     * @param  string  $eventName
      * @return MailWizzApi_Params
+     *
      * @throws Exception
      */
     public function getEventHandlers($eventName)
     {
-        if (!(self::$_eventHandlers instanceof MailWizzApi_Params)) {
+        if (! (self::$_eventHandlers instanceof MailWizzApi_Params)) {
             self::$_eventHandlers = new MailWizzApi_Params(self::$_eventHandlers);
         }
-        
-        if (!self::$_eventHandlers->contains($eventName) || !(self::$_eventHandlers->itemAt($eventName) instanceof MailWizzApi_Params)) {
+
+        if (! self::$_eventHandlers->contains($eventName) || ! (self::$_eventHandlers->itemAt($eventName) instanceof MailWizzApi_Params)) {
             self::$_eventHandlers->add($eventName, new MailWizzApi_Params());
         }
-        
+
         return self::$_eventHandlers->itemAt($eventName);
     }
 
     /**
      * Remove all the event handlers bound to the event name
      *
-     * @param string $eventName
-     *
+     * @param  string  $eventName
      * @return MailWizzApi_Base
+     *
      * @throws Exception
      */
     public function removeEventHandlers($eventName)
     {
         self::$_eventHandlers->remove($eventName);
+
         return $this;
     }
 
@@ -250,24 +258,24 @@ class MailWizzApi_Base
      * Called from within a child class, will populate
      * all the setters matching the array keys with the array values
      *
-     * @param array $params
      *
      * @return MailWizzApi_Base
+     *
      * @throws ReflectionException
      */
-    protected function populateFromArray(array $params = array())
+    protected function populateFromArray(array $params = [])
     {
         foreach ($params as $name => $value) {
             $found = false;
 
             if (property_exists($this, $name)) {
-                $param = (string)$name;
+                $param = (string) $name;
             } else {
                 $asSetterName = str_replace('_', ' ', $name);
                 $asSetterName = ucwords($asSetterName);
                 $asSetterName = str_replace(' ', '', $asSetterName);
                 $asSetterName[0] = strtolower($asSetterName[0]);
-                $param = (string)(property_exists($this, $asSetterName) ? $asSetterName : '');
+                $param = (string) (property_exists($this, $asSetterName) ? $asSetterName : '');
             }
 
             if ($param) {
@@ -277,8 +285,8 @@ class MailWizzApi_Base
                     $found = true;
                 }
             }
-            
-            if (!$found) {
+
+            if (! $found) {
                 $methodName = str_replace('_', ' ', $name);
                 $methodName = ucwords($methodName);
                 $methodName = str_replace(' ', '', $methodName);
@@ -292,7 +300,7 @@ class MailWizzApi_Base
                 }
             }
         }
-        
+
         return $this;
     }
 
@@ -301,17 +309,17 @@ class MailWizzApi_Base
      *
      * This method should never be called directly from outside of the class.
      *
-     * @param string $name
-     * @param mixed $value
-     *
+     * @param  string  $name
+     * @param  mixed  $value
      * @return void
+     *
      * @throws ReflectionException
      * @throws Exception
      */
     public function __set($name, $value)
     {
         $methodName = 'set'.ucfirst($name);
-        if (!method_exists($this, $methodName)) {
+        if (! method_exists($this, $methodName)) {
             $this->addToRegistry($name, $value);
         } else {
             $method = new ReflectionMethod($this, $methodName);
@@ -326,16 +334,16 @@ class MailWizzApi_Base
      *
      * This method should never be called directly from outside of the class.
      *
-     * @param string $name
-     *
+     * @param  string  $name
      * @return mixed
+     *
      * @throws ReflectionException
      * @throws Exception
      */
     public function __get($name)
     {
         $methodName = 'get'.ucfirst($name);
-        if (!method_exists($this, $methodName) && $this->getRegistry()->contains($name)) {
+        if (! method_exists($this, $methodName) && $this->getRegistry()->contains($name)) {
             return $this->getRegistry()->itemAt($name);
         } elseif (method_exists($this, $methodName)) {
             $method = new ReflectionMethod($this, $methodName);

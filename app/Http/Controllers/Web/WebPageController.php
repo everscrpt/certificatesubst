@@ -3,39 +3,39 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-use Harimayco\Menu\Models\Menus;
-use Harimayco\Menu\Models\MenuItems;
 use App\Model\Setting;
+use Harimayco\Menu\Models\Menus;
 
 class WebPageController extends Controller
 {
-    public function headerMenu(){
-		
-		// $get Header Menu 
-		$h_menu = Menus::where('id', 1)->with('items')->first();
+    public function headerMenu()
+    {
 
-		$header_menu = $h_menu->items->toArray();
+        // $get Header Menu
+        $h_menu = Menus::where('id', 1)->with('items')->first();
 
-		return $header_menu;
-	}
+        $header_menu = $h_menu->items->toArray();
 
-	public function footerMenu(){
-		
-		// $get footer Menu 
-		$h_menu = Menus::where('id', 2)->with('items')->first();
+        return $header_menu;
+    }
 
-		$footer_menu = $h_menu->items->toArray();
+    public function footerMenu()
+    {
 
-		return $footer_menu;
-	}
+        // $get footer Menu
+        $h_menu = Menus::where('id', 2)->with('items')->first();
 
-	public function web(){
-		
-        $web = Setting::select('value')->where(['key'=> 'web_setting'])->first();
+        $footer_menu = $h_menu->items->toArray();
+
+        return $footer_menu;
+    }
+
+    public function web()
+    {
+
+        $web = Setting::select('value')->where(['key' => 'web_setting'])->first();
         $data = json_decode($web->value);
 
-		return $data;
-	}
+        return $data;
+    }
 }

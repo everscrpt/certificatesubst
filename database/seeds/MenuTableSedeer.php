@@ -11,13 +11,13 @@ class MenuTableSedeer extends Seeder
      */
     public function run()
     {
-        DB::table(config('menu.table_prefix') . 'menus')->insert([
+        DB::table(config('menu.table_prefix').'menus')->insert([
             [
-			'name' =>  'Header Navigation',
+                'name' => 'Header Navigation',
             ],
             [
-            'name' =>  'Footer Navigation',
-            ]
-		]);
+                'name' => 'Footer Navigation',
+            ],
+        ]);
     }
 }

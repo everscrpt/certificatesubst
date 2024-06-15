@@ -3,7 +3,9 @@
  * This file contains classes implementing Map feature.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
+ *
  * @link http://www.yiiframework.com/
+ *
  * @copyright 2008-2013 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
@@ -23,17 +25,17 @@
  * $n=count($map);  // returns the number of items in the map
  * </pre>
  *
- * @property boolean $readOnly Whether this map is read-only or not. Defaults to false.
+ * @property bool $readOnly Whether this map is read-only or not. Defaults to false.
  * @property MailWizzApi_ParamsIterator $iterator An iterator for traversing the items in the list.
- * @property integer $count The number of items in the map.
+ * @property int $count The number of items in the map.
  * @property array $keys The key list.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @package system.collections
+ *
  * @since 1.0
  */
- 
- /**
+
+/**
  * MailWizzApi_Params implements a collection that takes key-value pairs.
  *
  * You can access, add or remove an item with a key by using
@@ -48,37 +50,41 @@
  * $n=count($map);  // returns the number of items in the map
  * </pre>
  *
- * @property boolean $readOnly Whether this map is read-only or not. Defaults to false.
+ * @property bool $readOnly Whether this map is read-only or not. Defaults to false.
  * @property MailWizzApi_ParamsIterator $iterator An iterator for traversing the items in the list.
- * @property integer $count The number of items in the map.
+ * @property int $count The number of items in the map.
  * @property array $keys The key list.
  *
  * @author Serban George Cristian
+ *
  * @link http://www.mailwizz.com
+ *
  * @copyright 2013-2020 https://www.mailwizz.com/
- * @package MailWizzApi
+ *
  * @since 1.0
  *
  * Implementation based on CMapIterator class file from the Yii framework.
  * Please see /license/yiiframework.txt file for license info.
  */
-class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, ArrayAccess, Countable
+class MailWizzApi_Params extends MailWizzApi_Base implements ArrayAccess, Countable, IteratorAggregate
 {
     /**
      * @var array internal data storage
      */
-    private $_data = array();
-    
+    private $_data = [];
+
     /**
-     * @var boolean whether this list is read-only
+     * @var bool whether this list is read-only
      */
     private $_readOnly = false;
 
     /**
      * Constructor.
      * Initializes the list with an array or an iterable object.
-     * @param mixed $data the intial data. Default is null, meaning no initialization.
-     * @param boolean $readOnly whether the list is read-only
+     *
+     * @param  mixed  $data  the intial data. Default is null, meaning no initialization.
+     * @param  bool  $readOnly  whether the list is read-only
+     *
      * @throws Exception If data is not null and neither an array nor an iterator.
      */
     public function __construct($data = null, $readOnly = false)
@@ -90,7 +96,7 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
     }
 
     /**
-     * @return boolean whether this map is read-only or not. Defaults to false.
+     * @return bool whether this map is read-only or not. Defaults to false.
      */
     public function getReadOnly()
     {
@@ -98,7 +104,7 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
     }
 
     /**
-     * @param boolean $value whether this list is read-only or not
+     * @param  bool  $value  whether this list is read-only or not
      * @return void
      */
     protected function setReadOnly($value)
@@ -109,6 +115,7 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
     /**
      * Returns an iterator for traversing the items in the list.
      * This method is required by the interface IteratorAggregate.
+     *
      * @return MailWizzApi_ParamsIterator an iterator for traversing the items in the list.
      */
     public function getIterator()
@@ -119,7 +126,8 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
     /**
      * Returns the number of items in the map.
      * This method is required by Countable interface.
-     * @return integer number of items in the map.
+     *
+     * @return int number of items in the map.
      */
     public function count()
     {
@@ -128,7 +136,8 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
 
     /**
      * Returns the number of items in the map.
-     * @return integer the number of items in the map
+     *
+     * @return int the number of items in the map
      */
     public function getCount()
     {
@@ -146,7 +155,8 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
     /**
      * Returns the item with the specified key.
      * This method is exactly the same as {@link offsetGet}.
-     * @param mixed $key the key
+     *
+     * @param  mixed  $key  the key
      * @return mixed the element at the offset, null if no element is found at the offset
      */
     public function itemAt($key)
@@ -157,15 +167,16 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
     /**
      * Adds an item into the map.
      * Note, if the specified key already exists, the old value will be overwritten.
-     * @param mixed $key key
-     * @param mixed $value value
-     * @throws Exception if the map is read-only
      *
+     * @param  mixed  $key  key
+     * @param  mixed  $value  value
      * @return void
+     *
+     * @throws Exception if the map is read-only
      */
     public function add($key, $value)
     {
-        if (!$this->_readOnly) {
+        if (! $this->_readOnly) {
             if ($key === null) {
                 $this->_data[] = $value;
             } else {
@@ -178,22 +189,25 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
 
     /**
      * Removes an item from the map by its key.
-     * @param mixed $key the key of the item to be removed
-     * @return mixed the removed value, null if no such key exists.
-     * @throws Exception if the map is read-only
      *
+     * @param  mixed  $key  the key of the item to be removed
+     * @return mixed the removed value, null if no such key exists.
      * @return mixed
+     *
+     * @throws Exception if the map is read-only
      */
     public function remove($key)
     {
-        if (!$this->_readOnly) {
+        if (! $this->_readOnly) {
             if (isset($this->_data[$key])) {
                 $value = $this->_data[$key];
                 unset($this->_data[$key]);
+
                 return $value;
             } else {
                 // it is possible the value is null, which is not detected by isset
                 unset($this->_data[$key]);
+
                 return null;
             }
         } else {
@@ -205,6 +219,7 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
      * Removes all items in the map.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function clear()
@@ -215,8 +230,8 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
     }
 
     /**
-     * @param mixed $key the key
-     * @return boolean whether the map contains an item with the specified key
+     * @param  mixed  $key  the key
+     * @return bool whether the map contains an item with the specified key
      */
     public function contains($key)
     {
@@ -234,15 +249,16 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
     /**
      * Copies iterable data into the map.
      * Note, existing data in the map will be cleared first.
-     * @param mixed $data the data to be copied from, must be an array or object implementing Traversable
-     * @throws Exception If data is neither an array nor an iterator.
      *
+     * @param  mixed  $data  the data to be copied from, must be an array or object implementing Traversable
      * @return void
+     *
+     * @throws Exception If data is neither an array nor an iterator.
      */
     public function copyFrom($data)
     {
         if (is_array($data) || $data instanceof Traversable) {
-            if ($this->getCount()>0) {
+            if ($this->getCount() > 0) {
                 $this->clear();
             }
             if ($data instanceof MailWizzApi_Params) {
@@ -268,14 +284,13 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
      * <li>any string-indexed elements in $b will overwrite elements in $a with the same index;</li>
      * </ul>
      *
-     * @param mixed $data the data to be merged with, must be an array or object implementing Traversable
-     * @param boolean $recursive whether the merging should be recursive.
+     * @param  mixed  $data  the data to be merged with, must be an array or object implementing Traversable
+     * @param  bool  $recursive  whether the merging should be recursive.
+     * @return void
      *
      * @throws Exception If data is neither an array nor an iterator.
-     *
-     * @return void
      */
-    public function mergeWith($data, $recursive=true)
+    public function mergeWith($data, $recursive = true)
     {
         if (is_array($data) || $data instanceof Traversable) {
             if ($data instanceof MailWizzApi_Params) {
@@ -283,7 +298,7 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
             }
             if ($recursive) {
                 if ($data instanceof Traversable) {
-                    $d=array();
+                    $d = [];
                     foreach ($data as $key => $value) {
                         $d[$key] = $value;
                     }
@@ -309,36 +324,40 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
      * type and are having the same key.
      * For integer-keyed elements, the elements from the latter array will
      * be appended to the former array.
-     * @param array $a array to be merged to
-     * @param array $b array to be merged from. You can specifiy additional
-     * arrays via third argument, fourth argument etc.
+     *
+     * @param  array  $a  array to be merged to
+     * @param  array  $b  array to be merged from. You can specifiy additional
+     *                    arrays via third argument, fourth argument etc.
      * @return array the merged array (the original arrays are not changed.)
+     *
      * @see mergeWith
      */
     public static function mergeArray($a, $b)
     {
         $args = func_get_args();
         $res = array_shift($args);
-        while (!empty($args)) {
+        while (! empty($args)) {
             $next = array_shift($args);
             foreach ($next as $k => $v) {
-                if (is_integer($k)) {
+                if (is_int($k)) {
                     isset($res[$k]) ? $res[] = $v : $res[$k] = $v;
                 } elseif (is_array($v) && isset($res[$k]) && is_array($res[$k])) {
                     $res[$k] = self::mergeArray($res[$k], $v);
                 } else {
-                    $res[$k]=$v;
+                    $res[$k] = $v;
                 }
             }
         }
+
         return $res;
     }
 
     /**
      * Returns whether there is an element at the specified offset.
      * This method is required by the interface ArrayAccess.
-     * @param mixed $offset the offset to check on
-     * @return boolean
+     *
+     * @param  mixed  $offset  the offset to check on
+     * @return bool
      */
     public function offsetExists($offset)
     {
@@ -348,7 +367,8 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
     /**
      * Returns the element at the specified offset.
      * This method is required by the interface ArrayAccess.
-     * @param integer $offset the offset to retrieve element.
+     *
+     * @param  int  $offset  the offset to retrieve element.
      * @return mixed the element at the offset, null if no element is found at the offset
      */
     public function offsetGet($offset)
@@ -360,10 +380,10 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
      * Sets the element at the specified offset.
      * This method is required by the interface ArrayAccess.
      *
-     * @param integer $offset the offset to set element
-     * @param mixed $item the element value
-     *
+     * @param  int  $offset  the offset to set element
+     * @param  mixed  $item  the element value
      * @return void
+     *
      * @throws Exception
      */
     public function offsetSet($offset, $item)
@@ -375,9 +395,9 @@ class MailWizzApi_Params extends MailWizzApi_Base implements IteratorAggregate, 
      * Unsets the element at the specified offset.
      * This method is required by the interface ArrayAccess.
      *
-     * @param mixed $offset the offset to unset element
-     *
+     * @param  mixed  $offset  the offset to unset element
      * @return void
+     *
      * @throws Exception
      */
     public function offsetUnset($offset)
