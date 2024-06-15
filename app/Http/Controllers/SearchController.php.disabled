@@ -49,9 +49,9 @@ class SearchController extends Controller
         
         $this->searchResults = [];
 
-        $resultFromOntario = array();
-        $resultFromConstruct = array();
-        $resultFromLink = array();
+        $resultFromOntario = [];
+        $resultFromConstruct = [];
+        $resultFromLink = [];
 
         dd($request);
         
@@ -65,7 +65,7 @@ class SearchController extends Controller
         if($this->strictSearch){
             
             //filter other website data
-            $newResult = array();
+            $newResult = [];
             foreach($mixResult as $result){
 
                 if($this->arraySearchStr($result,trim($request['search'],'"'))){
@@ -77,7 +77,7 @@ class SearchController extends Controller
 
 
             //filter own website data
-            $newResult = array();
+            $newResult = [];
             foreach($resultFromOntario as $result){
 
                 // dd($this->arraySearchStr($result,trim($request['search'],'"')));
@@ -104,13 +104,13 @@ class SearchController extends Controller
             $this->searchResults = $resultFromOntario;
         }
         else{
-            $this->searchResults = array(
-                array(
+            $this->searchResults = [
+                [
                     'ad' => true,
                     'url' => $this->getAd(),
                     'landingPage' => $this->adLandingPage
-                )
-            );
+                ]
+            ];
         }
         
         $certificates = array_merge($this->searchResults, $mixResult);
@@ -151,12 +151,12 @@ class SearchController extends Controller
             $page = 1;
         }
 
-        $params = array(
+        $params = [
             'search' => $request['search'],
             // 'dateBetween' => $request['dateBetween'],
             'dateStart' => $request['dateStart'],
             'dateEnd' => $request['dateEnd']
-        );
+        ];
 
         // if(isset($request['dateBetween']) && !empty($request['sdate'])){
         //     $params['sdate'] = $request['sdate'];
@@ -195,12 +195,12 @@ class SearchController extends Controller
     }
 
     private function scrapeConstructConnect($request){
-        $params = array(
+        $params = [
             'phrase' => trim($request['search'],'"'),
             'date' => 'custom',
             'date_from' => $this->dateRangeStart,
             'date_to' => $this->dateRangeEnd
-        );
+        ];
 
         if(isset($request['sdate']) && !empty($request['sdate'])){
             $params['date_from'] = $request['sdate'];
@@ -226,7 +226,7 @@ class SearchController extends Controller
 
         $crawler->filter('.search-results__wrapper .cards-item')->each(function ($card) use ( &$searchResultsSiteWise ) {
 
-            $certificate = ['ad' => false, 'owner_data' => array()];
+            $certificate = ['ad' => false, 'owner_data' => []];
             $certificate['site'] = "constructconnect.com";
             $certificate['title'] = $card->filter('.cards-title a')->text();
             
@@ -281,13 +281,13 @@ class SearchController extends Controller
             // dd($certificate);
 
 
-            $elements = array();
+            $elements = [];
 
             $line = 1;
 
             $card->filter('.cards-inner > dl')->each(function ($dl) use (&$line, &$certificate, &$elements) {
 
-                $tmpElement = array();
+                $tmpElement = [];
 
                 $dl->children()->each(function($child) use (&$tmpElement){
                     $attr = $child->text();
@@ -304,17 +304,17 @@ class SearchController extends Controller
 
                 if(isset($tmpElement[0]) && isset($tmpElement[1])){
                     // $certificate[$tmpElement[0]] = $tmpElement[1];
-                    array_push($certificate['owner_data'], array(
+                    array_push($certificate['owner_data'], [
                         'title' => $tmpElement[0],
                         'data' => $tmpElement[1]
-                    ));
+                    ]);
                 }
 
                 if(isset($tmpElement[2]) && isset($tmpElement[3])){
-                    array_push($certificate['owner_data'], array(
+                    array_push($certificate['owner_data'], [
                         'title' => $tmpElement[2],
                         'data' => $tmpElement[3]
-                    ));
+                    ]);
                 }
             });
 
@@ -335,10 +335,10 @@ class SearchController extends Controller
         $dateStart = $this->getFormattedDate($this->dateRangeStart,'Y-m-d','m/d/Y');
         $dateEnd = $this->getFormattedDate($this->dateRangeEnd,'Y-m-d','m/d/Y');
         // DateText: 04/01/2020 - 04/30/2020
-        $params = array(
+        $params = [
             'Search' => trim($request['search'],'"'),
             'DateText' => $dateStart . ' - ' . $dateEnd
-        );
+        ];
 
         // if(isset($request['sdate']) && !empty($request['sdate'])){
         //     $params['date_from'] = $request['sdate'];
@@ -360,7 +360,7 @@ class SearchController extends Controller
 
         $crawler->filter('tbody tr')->each(function ($tr) use ( &$searchResultsSiteWise ) {
             // $certificate = ['ad' => false];
-            $certificate = ['ad' => false, 'owner_data' => array()];
+            $certificate = ['ad' => false, 'owner_data' => []];
             $certificate['site'] = "link2build.ca";
             $certificate['title'] = $tr->filter('td a')->text();
 
@@ -431,13 +431,13 @@ class SearchController extends Controller
 
 
         dd(trim($request['search'],'"'));
-        $params = array(
+        $params = [
             'per_page' => $this->maxItemOwnSite,
             'search' => trim($request['search'],'"'),
             'date_published' => 'custom',
             'date_published_from' => $this->dateRangeStart,
             'date_published_to' => $this->dateRangeEnd
-        );
+        ];
 
         if(isset($request['page']) && !empty($request['page'])){
             $params['certificates_page'] = $request['page'];
@@ -466,7 +466,7 @@ class SearchController extends Controller
 
         $crawler->filter('.ocn-certificate-row')->each(function ($tr) use ( &$searchResultsSiteWise ) {
                         
-            $certificate = ['ad' => false, 'owner_data' => array()];
+            $certificate = ['ad' => false, 'owner_data' => []];
             $certificate['site'] = "ontarioconstructionnews.com";
             $certificate['title'] = $tr->filter('td a')->text();
             $certificate['link'] = $tr->filter('td a')->attr('href');
@@ -527,7 +527,7 @@ class SearchController extends Controller
 
         $files = scandir( $path );
 
-        $adFiles = array();
+        $adFiles = [];
 
         $count = 0;
         foreach($files as $file){
