@@ -74,7 +74,7 @@ class MailwizzController extends Controller
         $the_date_object = new \DateTime(date('Y-m-d ').' '.$data->time, new \DateTimeZone('America/Toronto'));
         $time_to_send = $the_date_object->format('Y-m-d H:i:s');
 
-        $posts = app('App\Http\Controllers\Web\SearchController')->getLatestPosts();
+        $posts = app(\App\Http\Controllers\Web\SearchController::class)->getLatestPosts();
 
         // die("Total posts " . count($posts));
 
