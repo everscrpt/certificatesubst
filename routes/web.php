@@ -17,11 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'Web\HomeController@index')->name('home');
 
-Route::get('search', ['as' => 'search', 'uses' => 'Web\SearchController@search']);
+Route::get('search', 'Web\SearchController@search')->name('search');
 
 // Mailwizz
-Route::post('subscribe', ['as' => 'subscribe', 'uses' => 'Mailwizz\MailwizzController@subscribe']);
-Route::get('sendmail', ['as' => 'sendmail', 'uses' => 'Mailwizz\MailwizzController@sendMail']);
+Route::post('subscribe', 'Mailwizz\MailwizzController@subscribe')->name('subscribe');
+Route::get('sendmail', 'Mailwizz\MailwizzController@sendMail')->name('sendmail');
 // Route::get('getpost', ['as' => 'getpost', 'uses' => 'web\SearchController@getLatestPosts']);
 
 // Admin Panel Routes
@@ -30,19 +30,19 @@ Auth::routes(['register' => false]);
 
 Route::get('/admin', 'Admin\HomeController@index')->name('admin')->middleware('auth');
 
-Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
-    Route::resource('user', 'Admin\UserController', ['except' => ['show']]);
+Route::middleware('auth')->prefix('admin')->group(function () {
+    Route::resource('user', 'Admin\UserController')->except('show');
 
     // Page
-    Route::resource('page', 'Admin\PageController', ['except' => ['show']]);
+    Route::resource('page', 'Admin\PageController')->except('show');
     Route::post('admin/page/bulkaction', 'Admin\PageController@bulkAction')->name('admin.page.bulkaction');
 
-    Route::get('profile', ['as' => 'profile.edit', 'uses' => 'Admin\ProfileController@edit']);
-    Route::put('profile', ['as' => 'profile.update', 'uses' => 'Admin\ProfileController@update']);
-    Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'Admin\ProfileController@password']);
+    Route::get('profile', 'Admin\ProfileController@edit')->name('profile.edit');
+    Route::put('profile', 'Admin\ProfileController@update')->name('profile.update');
+    Route::put('profile/password', 'Admin\ProfileController@password')->name('profile.password');
 
     // Media Routes
-    Route::get('media', ['as' => 'media', 'uses' => 'Media\MediaController@index']);
+    Route::get('media', 'Media\MediaController@index')->name('media');
 
     Route::post('media/upload', 'Media\MediaController@store')->name('upload.media');
     Route::post('delete_image/{id}', 'Media\MediaController@destroy');
@@ -68,8 +68,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
     Route::post('search-ocn-update', 'Admin\SettingController@search_ocn_update')->name('search-ocn-update');
 
     // Mailwizz Settings
-    Route::get('mailwizz-settings', ['as' => 'mailwizz-settings', 'uses' => 'Admin\SettingController@mailwizzSetting']);
-    Route::post('mailwizz-settings-update', ['as' => 'mailwizz-settings-update', 'uses' => 'Admin\SettingController@mailwizzSettingUpdate']);
+    Route::get('mailwizz-settings', 'Admin\SettingController@mailwizzSetting')->name('mailwizz-settings');
+    Route::post('mailwizz-settings-update', 'Admin\SettingController@mailwizzSettingUpdate')->name('mailwizz-settings-update');
 
 });
 
