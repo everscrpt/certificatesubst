@@ -37,6 +37,6 @@ class dailyAt extends Command
      */
     public function handle()
     {
-        echo app('App\Http\Controllers\Mailwizz\MailwizzController')->sendMail();
+        echo app(\App\Http\Controllers\Mailwizz\MailwizzController::class)->sendMail();
     }
 }

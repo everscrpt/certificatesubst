@@ -1,6 +1,9 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PostTableSeeder extends Seeder
 {
@@ -28,19 +31,19 @@ class PostTableSeeder extends Seeder
             'post_excerpt' => 'page-one',
             'post_status' => 'published',
             'post_type' => 'page',
-            'created_at' => now()
+            'created_at' => now(),
         ],
-        [
-            'post_author' => '1',
-            'post_content' => $data_html,
-            'post_title' => 'Page Two',
-            'meta_description' => $meta_description,
-            'slug' => 'page-two',
-            'post_excerpt' => 'page-two',
-            'post_status' => 'published',
-            'post_type' => 'page',
-            'created_at' => now()
-        ]
+            [
+                'post_author' => '1',
+                'post_content' => $data_html,
+                'post_title' => 'Page Two',
+                'meta_description' => $meta_description,
+                'slug' => 'page-two',
+                'post_excerpt' => 'page-two',
+                'post_status' => 'published',
+                'post_type' => 'page',
+                'created_at' => now(),
+            ],
         ]);
     }
 }

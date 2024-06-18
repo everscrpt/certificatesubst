@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use App\Http\Controllers\Controller;
 
-use App\Http\Requests\ProfileRequest;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\PasswordRequest;
+use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
@@ -22,7 +22,6 @@ class ProfileController extends Controller
     /**
      * Update the profile
      *
-     * @param  \App\Http\Requests\ProfileRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ProfileRequest $request)
@@ -35,7 +34,6 @@ class ProfileController extends Controller
     /**
      * Change the password
      *
-     * @param  \App\Http\Requests\PasswordRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function password(PasswordRequest $request)

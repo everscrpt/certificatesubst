@@ -3,17 +3,17 @@
  * This file contains the File cache class used in the MailWizzApi PHP-SDK.
  *
  * @author Serban George Cristian <cristian.serban@mailwizz.com>
+ *
  * @link https://www.mailwizz.com/
+ *
  * @copyright 2013-2020 https://www.mailwizz.com/
  */
- 
- 
+
 /**
  * MailWizzApi_Cache_File makes use of the file system in order to cache data.
  *
  * @author Serban George Cristian <cristian.serban@mailwizz.com>
- * @package MailWizzApi
- * @subpackage Cache
+ *
  * @since 1.0
  */
 class MailWizzApi_Cache_File extends MailWizzApi_Cache_Abstract
@@ -34,8 +34,8 @@ class MailWizzApi_Cache_File extends MailWizzApi_Cache_Abstract
      *
      * This method implements {@link MailWizzApi_Cache_Abstract::set()}.
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  string  $key
+     * @param  mixed  $value
      * @return bool
      */
     public function set($key, $value)
@@ -47,9 +47,10 @@ class MailWizzApi_Cache_File extends MailWizzApi_Cache_Abstract
             }
         }
         $key = sha1($key);
-        return (bool)@file_put_contents($this->getFilesPath() . '/' . $key.'.bin', $value);
+
+        return (bool) @file_put_contents($this->getFilesPath().'/'.$key.'.bin', $value);
     }
-    
+
     /**
      * Get cached data by given key.
      *
@@ -58,25 +59,26 @@ class MailWizzApi_Cache_File extends MailWizzApi_Cache_Abstract
      *
      * This method implements {@link MailWizzApi_Cache_Abstract::get()}.
      *
-     * @param string $key
+     * @param  string  $key
      * @return mixed
      */
     public function get($key)
     {
         $key = sha1($key);
-        
+
         if (isset($this->_loaded[$key])) {
             return $this->_loaded[$key];
         }
-        
-        if (!is_file($file = $this->getFilesPath() . '/' . $key.'.bin')) {
+
+        if (! is_file($file = $this->getFilesPath().'/'.$key.'.bin')) {
             return $this->_loaded[$key] = null;
         }
-        
-        $fileContents = (string)file_get_contents($file);
+
+        $fileContents = (string) file_get_contents($file);
+
         return $this->_loaded[$key] = unserialize($fileContents);
     }
-    
+
     /**
      * Delete cached data by given key.
      *
@@ -85,25 +87,26 @@ class MailWizzApi_Cache_File extends MailWizzApi_Cache_Abstract
      *
      * This method implements {@link MailWizzApi_Cache_Abstract::delete()}.
      *
-     * @param string $key
+     * @param  string  $key
      * @return bool
      */
     public function delete($key)
     {
         $key = sha1($key);
-        
+
         if (isset($this->_loaded[$key])) {
             unset($this->_loaded[$key]);
         }
-        
-        if (is_file($file = $this->getFilesPath() . '/' . $key.'.bin')) {
+
+        if (is_file($file = $this->getFilesPath().'/'.$key.'.bin')) {
             @unlink($file);
+
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * Delete all cached data.
      *
@@ -113,14 +116,15 @@ class MailWizzApi_Cache_File extends MailWizzApi_Cache_Abstract
      */
     public function flush()
     {
-        $this->_loaded = array();
+        $this->_loaded = [];
+
         return $this->doFlush($this->getFilesPath());
     }
-    
+
     /**
      * Set the cache path.
      *
-     * @param string $path the path to the directory that will store the files
+     * @param  string  $path  the path to the directory that will store the files
      * @return MailWizzApi_Cache_File
      */
     public function setFilesPath($path)
@@ -128,9 +132,10 @@ class MailWizzApi_Cache_File extends MailWizzApi_Cache_Abstract
         if (file_exists($path) && is_dir($path)) {
             $this->_filesPath = $path;
         }
+
         return $this;
     }
-    
+
     /**
      * Get the cache path.
      *
@@ -143,42 +148,44 @@ class MailWizzApi_Cache_File extends MailWizzApi_Cache_Abstract
     public function getFilesPath()
     {
         if (empty($this->_filesPath)) {
-            $this->_filesPath = dirname(__FILE__) . '/data/cache';
+            $this->_filesPath = dirname(__FILE__).'/data/cache';
         }
+
         return $this->_filesPath;
     }
-    
+
     /**
      * Helper method to clear the cache directory contents
      *
-     * @param string $path
+     * @param  string  $path
      * @return bool
      */
     protected function doFlush($path)
     {
-        if (!file_exists($path) || !is_dir($path)) {
+        if (! file_exists($path) || ! is_dir($path)) {
             return false;
         }
-        
+
         if (($handle = opendir($path)) === false) {
             return false;
         }
-        
+
         while (($file = readdir($handle)) !== false) {
             if ($file[0] === '.') {
                 continue;
             }
-            
-            $fullPath=$path.DIRECTORY_SEPARATOR.$file;
-            
+
+            $fullPath = $path.DIRECTORY_SEPARATOR.$file;
+
             if (is_dir($fullPath)) {
                 $this->doFlush($fullPath);
             } else {
                 @unlink($fullPath);
             }
         }
-        
+
         closedir($handle);
+
         return true;
     }
 }

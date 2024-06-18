@@ -1,31 +1,32 @@
 <?php
+
 return [
     'allowed_type' => [
         'image' => 'Image',
         'document' => 'Document',
-        'video' => 'Video'
+        'video' => 'Video',
     ],
 
     'image_sizes' => [
-        'slider'  => array(
+        'slider' => [
             'width' => 800,
             'height' => 300,
-            'crop' => true
-        ),
-        'single_post_image'  => array(
+            'crop' => true,
+        ],
+        'single_post_image' => [
             'width' => 800,
             'height' => 400,
-            'crop' => true
-        ),
-        'thumbnail'  => array(
+            'crop' => true,
+        ],
+        'thumbnail' => [
             'height' => 400,
             'width' => 400,
-            'crop' => true
-        ),
-        'content_post'  => array(
+            'crop' => true,
+        ],
+        'content_post' => [
             'height' => 400,
             'width' => 1140,
-            'crop' => true
-        )
+            'crop' => true,
+        ],
     ],
 ];

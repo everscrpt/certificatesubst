@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-
-use Config;
+use App\Http\Requests\PostRequest;
 use App\Model\Post;
-use Auth;
-use App\Http\Requests\PostRequest;  
+use Config;
 use Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
@@ -18,25 +16,24 @@ class PageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-
-    private $post_type = "page";
+    private $post_type = 'page';
 
     public function index(Request $request)
     {
-        $posts = Post::where('post_type',$this->post_type);
+        $posts = Post::where('post_type', $this->post_type);
 
-        if(!empty($request->search)){
+        if (! empty($request->search)) {
             $search = $request->search;
-            $posts = $posts->where(function($q) use ($search){
-                $q->where('post_title', 'like', '%' .$search. '%');
-                $q->orWhere('post_content', 'like', '%' .$search. '%');
-                $q->orWhere('post_excerpt', 'like', '%' .$search. '%');
+            $posts = $posts->where(function ($q) use ($search) {
+                $q->where('post_title', 'like', '%'.$search.'%');
+                $q->orWhere('post_content', 'like', '%'.$search.'%');
+                $q->orWhere('post_excerpt', 'like', '%'.$search.'%');
             });
         }
-        
-        if(!empty($request->post_status)){
+
+        if (! empty($request->post_status)) {
             $post_status = $request->post_status;
-            $posts = $posts->where(function($q) use ($post_status){
+            $posts = $posts->where(function ($q) use ($post_status) {
                 $q->where('post_status', $post_status);
             });
         }
@@ -45,7 +42,7 @@ class PageController extends Controller
 
         $post_statuses = Config::get('custom.post.post_statuses');
 
-        return view('admin.page.index',compact('posts', 'post_statuses'));
+        return view('admin.page.index', compact('posts', 'post_statuses'));
     }
 
     /**
@@ -58,14 +55,13 @@ class PageController extends Controller
         $user = auth()->user();
 
         $post = POST::Create(['post_type' => $this->post_type, 'post_author' => $user->id]);
-        
+
         return \Redirect::route('page.edit', $post->id);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -93,11 +89,12 @@ class PageController extends Controller
     public function edit($id)
     {
 
-        $post = POST::where('id',$id)->with('media')->first();
+        $post = POST::where('id', $id)->with('media')->first();
 
-        if(!$post){
+        if (! $post) {
             return abort(404);
         }
+
         return view('admin.page.edit', compact('post'));
 
     }
@@ -114,34 +111,35 @@ class PageController extends Controller
         $post = Post::find($id);
         $post->post_title = $PostRequest->post_title;
         $post->post_content = $PostRequest->post_content;
-		$post->post_excerpt = $PostRequest->post_excerpt;
-		$post->meta_description = $PostRequest->meta_description;
-		$post->post_status = $PostRequest->post_status;
-		$post->featured_image = $PostRequest->featured_image;
+        $post->post_excerpt = $PostRequest->post_excerpt;
+        $post->meta_description = $PostRequest->meta_description;
+        $post->post_status = $PostRequest->post_status;
+        $post->featured_image = $PostRequest->featured_image;
 
-		if(isset($PostRequest->slug)){
-			if( strcmp($post->slug, $PostRequest->slug) !== 0 )
-			$post->slug = SlugService::createSlug(Post::class, 'slug', strtolower($PostRequest->slug));
-		}else{
-			if( strcmp($post->slug,  $PostRequest->post_title) !== 0 )
-			$post->slug = SlugService::createSlug(Post::class, 'slug', strtolower($PostRequest->post_title));
-		}
+        if (isset($PostRequest->slug)) {
+            if (strcmp($post->slug, $PostRequest->slug) !== 0) {
+                $post->slug = SlugService::createSlug(Post::class, 'slug', strtolower($PostRequest->slug));
+            }
+        } else {
+            if (strcmp($post->slug, $PostRequest->post_title) !== 0) {
+                $post->slug = SlugService::createSlug(Post::class, 'slug', strtolower($PostRequest->post_title));
+            }
+        }
 
-
-        if(!empty($PostRequest->categories)){
-            TaxonomyRelation::where(['post_id' => $PostRequest->id ])->delete();
-            foreach($PostRequest->categories as $category){
+        if (! empty($PostRequest->categories)) {
+            TaxonomyRelation::where(['post_id' => $PostRequest->id])->delete();
+            foreach ($PostRequest->categories as $category) {
                 TaxonomyRelation::create(['post_id' => $PostRequest->id, 'term_id' => $category]);
             }
         }
-               
-        if($PostRequest->comment_status && $PostRequest->comment_status == 'open'){
+
+        if ($PostRequest->comment_status && $PostRequest->comment_status == 'open') {
             $post->comment_status = 'open';
         }
-        
+
         $post->save();
 
-		return back()->withSuccess('Page saved successfully!');
+        return back()->withSuccess('Page saved successfully!');
     }
 
     /**
@@ -153,32 +151,35 @@ class PageController extends Controller
     public function destroy($id)
     {
         Post::find($id)->delete();
-		return back()->withsuccess('Page deleted successfully!');
+
+        return back()->withsuccess('Page deleted successfully!');
     }
 
     public function bulkAction(Request $request)
     {
 
-		if(!isset($request->check_box_bulk_action)){
-			return back()->with(['message' => 'Please select an page!']);
-		}
-        
+        if (! isset($request->check_box_bulk_action)) {
+            return back()->with(['message' => 'Please select an page!']);
+        }
+
         $post_ids = array_values($request->check_box_bulk_action);
 
-        if(!empty($post_ids)){
-            if($request->bulk_action == 'draft'){
+        if (! empty($post_ids)) {
+            if ($request->bulk_action == 'draft') {
                 Post::whereIn('id', $post_ids)->update(['post_status' => 'draft']);
+
                 return \Redirect::route('page.index')->with(['success' => 'Page saved to draft!']);
             }
 
-            if($request->bulk_action == 'published'){
+            if ($request->bulk_action == 'published') {
                 Post::whereIn('id', $post_ids)->update(['post_status' => 'published']);
+
                 return \Redirect::route('page.index')->with(['success' => 'Page saved to draft!']);
             }
 
+            if ($request->bulk_action == 'delete') {
+                Post::whereIn('id', $post_ids)->delete();
 
-            if($request->bulk_action == 'delete'){
-                Post::whereIn('id', $post_ids)->delete();                
                 return \Redirect::route('page.index')->with(['success' => 'Page deleted successfully!']);
             }
         }

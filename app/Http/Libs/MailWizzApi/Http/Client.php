@@ -3,17 +3,17 @@
  * This file contains the MailWizzApi_Http_Client class used in the MailWizzApi PHP-SDK.
  *
  * @author Serban George Cristian <cristian.serban@mailwizz.com>
+ *
  * @link https://www.mailwizz.com/
+ *
  * @copyright 2013-2020 https://www.mailwizz.com/
  */
- 
- 
+
 /**
  * MailWizzApi_Http_Client is the http client interface used to make the remote requests and receive the responses.
  *
  * @author Serban George Cristian <cristian.serban@mailwizz.com>
- * @package MailWizzApi
- * @subpackage Http
+ *
  * @since 1.0
  */
 class MailWizzApi_Http_Client extends MailWizzApi_Base
@@ -21,23 +21,23 @@ class MailWizzApi_Http_Client extends MailWizzApi_Base
     /**
      * Marker for GET requests.
      */
-    const METHOD_GET     = 'GET';
-    
+    const METHOD_GET = 'GET';
+
     /**
      * Marker for POST requests.
      */
-    const METHOD_POST    = 'POST';
-    
+    const METHOD_POST = 'POST';
+
     /**
      * Marker for PUT requests.
      */
-    const METHOD_PUT     = 'PUT';
-    
+    const METHOD_PUT = 'PUT';
+
     /**
      * Marker for DELETE requests.
      */
     const METHOD_DELETE = 'DELETE';
-    
+
     /**
      * Marker for the client version.
      */
@@ -47,22 +47,22 @@ class MailWizzApi_Http_Client extends MailWizzApi_Base
      * @var MailWizzApi_Params the GET params sent in the request.
      */
     public $paramsGet;
-    
+
     /**
      * @var MailWizzApi_Params the POST params sent in the request.
      */
     public $paramsPost;
-    
+
     /**
      * @var MailWizzApi_Params the PUT params sent in the request.
      */
     public $paramsPut;
-    
+
     /**
      * @var MailWizzApi_Params the DELETE params sent in the request.
      */
     public $paramsDelete;
-    
+
     /**
      * @var MailWizzApi_Params the headers sent in the request.
      */
@@ -77,22 +77,22 @@ class MailWizzApi_Http_Client extends MailWizzApi_Base
      * @var int the default timeout for request.
      */
     public $timeout = 30;
-    
+
     /**
      * @var bool whether to sign the request.
      */
     public $signRequest = true;
-    
+
     /**
      * @var bool whether to get the response headers.
      */
     public $getResponseHeaders = false;
-    
+
     /**
      * @var bool whether to cache the request response.
      */
     public $enableCache = false;
-    
+
     /**
      * @var string the method used in the request.
      */
@@ -101,18 +101,17 @@ class MailWizzApi_Http_Client extends MailWizzApi_Base
     /**
      * Constructor.
      *
-     * @param array $options
      *
      * @throws ReflectionException
      * @throws Exception
      */
-    public function __construct(array $options = array())
+    public function __construct(array $options = [])
     {
         $this->populateFromArray($options);
-        
-        foreach (array('paramsGet', 'paramsPost', 'paramsPut', 'paramsDelete', 'headers') as $param) {
-            if (!($this->$param instanceof MailWizzApi_Params)) {
-                $this->$param = new MailWizzApi_Params(!is_array($this->$param) ? array() : $this->$param);
+
+        foreach (['paramsGet', 'paramsPost', 'paramsPut', 'paramsDelete', 'headers'] as $param) {
+            if (! ($this->$param instanceof MailWizzApi_Params)) {
+                $this->$param = new MailWizzApi_Params(! is_array($this->$param) ? [] : $this->$param);
             }
         }
     }
@@ -126,7 +125,7 @@ class MailWizzApi_Http_Client extends MailWizzApi_Base
     {
         return strtoupper($this->method) === self::METHOD_GET;
     }
-    
+
     /**
      * Whether the request method is a POST method.
      *
@@ -136,7 +135,7 @@ class MailWizzApi_Http_Client extends MailWizzApi_Base
     {
         return strtoupper($this->method) === self::METHOD_POST;
     }
-    
+
     /**
      * Whether the request method is a PUT method.
      *
@@ -146,7 +145,7 @@ class MailWizzApi_Http_Client extends MailWizzApi_Base
     {
         return strtoupper($this->method) === self::METHOD_PUT;
     }
-    
+
     /**
      * Whether the request method is a DELETE method.
      *
@@ -161,11 +160,13 @@ class MailWizzApi_Http_Client extends MailWizzApi_Base
      * Makes the request to the remote host.
      *
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function request()
     {
         $request = new MailWizzApi_Http_Request($this);
+
         return $response = $request->send();
     }
 }

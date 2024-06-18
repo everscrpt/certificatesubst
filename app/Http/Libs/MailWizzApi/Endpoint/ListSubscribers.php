@@ -3,17 +3,17 @@
  * This file contains the lists subscribers endpoint for MailWizzApi PHP-SDK.
  *
  * @author Serban George Cristian <cristian.serban@mailwizz.com>
+ *
  * @link https://www.mailwizz.com/
+ *
  * @copyright 2013-2020 https://www.mailwizz.com/
  */
-
 
 /**
  * MailWizzApi_Endpoint_ListSubscribers handles all the API calls for lists subscribers.
  *
  * @author Serban George Cristian <cristian.serban@mailwizz.com>
- * @package MailWizzApi
- * @subpackage Endpoint
+ *
  * @since 1.0
  */
 class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
@@ -23,24 +23,24 @@ class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
      *
      * Note, the results returned by this endpoint can be cached.
      *
-     * @param string $listUid
-     * @param integer $page
-     * @param integer $perPage
-     *
+     * @param  string  $listUid
+     * @param  int  $page
+     * @param  int  $perPage
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function getSubscribers($listUid, $page = 1, $perPage = 10)
     {
-        $client = new MailWizzApi_Http_Client(array(
-            'method'        => MailWizzApi_Http_Client::METHOD_GET,
-            'url'           => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers', $listUid)),
-            'paramsGet'     => array(
-                'page'      => (int)$page,
-                'per_page'  => (int)$perPage,
-            ),
-            'enableCache'   => true,
-        ));
+        $client = new MailWizzApi_Http_Client([
+            'method' => MailWizzApi_Http_Client::METHOD_GET,
+            'url' => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers', $listUid)),
+            'paramsGet' => [
+                'page' => (int) $page,
+                'per_page' => (int) $perPage,
+            ],
+            'enableCache' => true,
+        ]);
 
         return $response = $client->request();
     }
@@ -50,19 +50,20 @@ class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
      *
      * Note, the results returned by this endpoint can be cached.
      *
-     * @param string $listUid
-     * @param string $subscriberUid
+     * @param  string  $listUid
+     * @param  string  $subscriberUid
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function getSubscriber($listUid, $subscriberUid)
     {
-        $client = new MailWizzApi_Http_Client(array(
-            'method'        => MailWizzApi_Http_Client::METHOD_GET,
-            'url'           => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers/%s', (string)$listUid, (string)$subscriberUid)),
-            'paramsGet'     => array(),
-            'enableCache'   => true,
-        ));
+        $client = new MailWizzApi_Http_Client([
+            'method' => MailWizzApi_Http_Client::METHOD_GET,
+            'url' => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers/%s', (string) $listUid, (string) $subscriberUid)),
+            'paramsGet' => [],
+            'enableCache' => true,
+        ]);
 
         return $response = $client->request();
     }
@@ -70,18 +71,18 @@ class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
     /**
      * Create a new subscriber in the given list
      *
-     * @param string $listUid
-     * @param array $data
+     * @param  string  $listUid
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function create($listUid, array $data)
     {
-        $client = new MailWizzApi_Http_Client(array(
-            'method'        => MailWizzApi_Http_Client::METHOD_POST,
-            'url'           => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers', (string)$listUid)),
-            'paramsPost'    => $data,
-        ));
+        $client = new MailWizzApi_Http_Client([
+            'method' => MailWizzApi_Http_Client::METHOD_POST,
+            'url' => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers', (string) $listUid)),
+            'paramsPost' => $data,
+        ]);
 
         return $response = $client->request();
     }
@@ -90,18 +91,18 @@ class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
      * Create subscribers in bulk in the given list
      * This feature is available since MailWizz 1.8.1
      *
-     * @param string $listUid
-     * @param array $data
+     * @param  string  $listUid
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function createBulk($listUid, array $data)
     {
-        $client = new MailWizzApi_Http_Client(array(
-            'method'        => MailWizzApi_Http_Client::METHOD_POST,
-            'url'           => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers/bulk', (string)$listUid)),
-            'paramsPost'    => array('subscribers' => $data),
-        ));
+        $client = new MailWizzApi_Http_Client([
+            'method' => MailWizzApi_Http_Client::METHOD_POST,
+            'url' => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers/bulk', (string) $listUid)),
+            'paramsPost' => ['subscribers' => $data],
+        ]);
 
         return $response = $client->request();
     }
@@ -109,19 +110,19 @@ class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
     /**
      * Update existing subscriber in given list
      *
-     * @param string $listUid
-     * @param string $subscriberUid
-     * @param array $data
+     * @param  string  $listUid
+     * @param  string  $subscriberUid
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function update($listUid, $subscriberUid, array $data)
     {
-        $client = new MailWizzApi_Http_Client(array(
-            'method'        => MailWizzApi_Http_Client::METHOD_PUT,
-            'url'           => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers/%s', (string)$listUid, (string)$subscriberUid)),
-            'paramsPut'     => $data,
-        ));
+        $client = new MailWizzApi_Http_Client([
+            'method' => MailWizzApi_Http_Client::METHOD_PUT,
+            'url' => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers/%s', (string) $listUid, (string) $subscriberUid)),
+            'paramsPut' => $data,
+        ]);
 
         return $response = $client->request();
     }
@@ -129,10 +130,10 @@ class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
     /**
      * Update existing subscriber by email address
      *
-     * @param string $listUid
-     * @param string $emailAddress
-     * @param array $data
+     * @param  string  $listUid
+     * @param  string  $emailAddress
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function updateByEmail($listUid, $emailAddress, array $data)
@@ -161,18 +162,19 @@ class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
     /**
      * Unsubscribe existing subscriber from given list
      *
-     * @param string $listUid
-     * @param string $subscriberUid
+     * @param  string  $listUid
+     * @param  string  $subscriberUid
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function unsubscribe($listUid, $subscriberUid)
     {
-        $client = new MailWizzApi_Http_Client(array(
-            'method'        => MailWizzApi_Http_Client::METHOD_PUT,
-            'url'           => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers/%s/unsubscribe', (string)$listUid, (string)$subscriberUid)),
-            'paramsPut'     => array(),
-        ));
+        $client = new MailWizzApi_Http_Client([
+            'method' => MailWizzApi_Http_Client::METHOD_PUT,
+            'url' => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers/%s/unsubscribe', (string) $listUid, (string) $subscriberUid)),
+            'paramsPut' => [],
+        ]);
 
         return $response = $client->request();
     }
@@ -180,9 +182,10 @@ class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
     /**
      * Unsubscribe existing subscriber by email address
      *
-     * @param string $listUid
-     * @param string $emailAddress
+     * @param  string  $listUid
+     * @param  string  $emailAddress
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function unsubscribeByEmail($listUid, $emailAddress)
@@ -211,39 +214,40 @@ class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
     /**
      * Unsubscribe existing subscriber by email address from all lists
      *
-     * @param string $emailAddress
+     * @param  string  $emailAddress
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function unsubscribeByEmailFromAllLists($emailAddress)
     {
-        $client = new MailWizzApi_Http_Client(array(
-            'method'        => MailWizzApi_Http_Client::METHOD_PUT,
-            'url'           => $this->getConfig()->getApiUrl('lists/subscribers/unsubscribe-by-email-from-all-lists'),
-            'paramsPut'     => array(
+        $client = new MailWizzApi_Http_Client([
+            'method' => MailWizzApi_Http_Client::METHOD_PUT,
+            'url' => $this->getConfig()->getApiUrl('lists/subscribers/unsubscribe-by-email-from-all-lists'),
+            'paramsPut' => [
                 'EMAIL' => $emailAddress,
-            ),
-        ));
+            ],
+        ]);
 
         return $response = $client->request();
     }
 
-
     /**
      * Delete existing subscriber in given list
      *
-     * @param string $listUid
-     * @param string $subscriberUid
+     * @param  string  $listUid
+     * @param  string  $subscriberUid
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function delete($listUid, $subscriberUid)
     {
-        $client = new MailWizzApi_Http_Client(array(
-            'method'        => MailWizzApi_Http_Client::METHOD_DELETE,
-            'url'           => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers/%s', (string)$listUid, (string)$subscriberUid)),
-            'paramsDelete'  => array(),
-        ));
+        $client = new MailWizzApi_Http_Client([
+            'method' => MailWizzApi_Http_Client::METHOD_DELETE,
+            'url' => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers/%s', (string) $listUid, (string) $subscriberUid)),
+            'paramsDelete' => [],
+        ]);
 
         return $response = $client->request();
     }
@@ -251,9 +255,10 @@ class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
     /**
      * Delete existing subscriber by email address
      *
-     * @param string $listUid
-     * @param string $emailAddress
+     * @param  string  $listUid
+     * @param  string  $emailAddress
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function deleteByEmail($listUid, $emailAddress)
@@ -271,18 +276,19 @@ class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
     /**
      * Search in a list for given subscriber by email address
      *
-     * @param string $listUid
-     * @param string $emailAddress
+     * @param  string  $listUid
+     * @param  string  $emailAddress
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function emailSearch($listUid, $emailAddress)
     {
-        $client = new MailWizzApi_Http_Client(array(
-            'method'        => MailWizzApi_Http_Client::METHOD_GET,
-            'url'           => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers/search-by-email', (string)$listUid)),
-            'paramsGet'     => array('EMAIL' => (string)$emailAddress),
-        ));
+        $client = new MailWizzApi_Http_Client([
+            'method' => MailWizzApi_Http_Client::METHOD_GET,
+            'url' => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers/search-by-email', (string) $listUid)),
+            'paramsGet' => ['EMAIL' => (string) $emailAddress],
+        ]);
 
         return $response = $client->request();
     }
@@ -291,17 +297,18 @@ class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
      * Search in a all lists for given subscriber by email address
      * Please note that this is available only for mailwizz >= 1.3.6.2
      *
-     * @param string $emailAddress
+     * @param  string  $emailAddress
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function emailSearchAllLists($emailAddress)
     {
-        $client = new MailWizzApi_Http_Client(array(
-            'method'        => MailWizzApi_Http_Client::METHOD_GET,
-            'url'           => $this->getConfig()->getApiUrl('lists/subscribers/search-by-email-in-all-lists'),
-            'paramsGet'     => array('EMAIL' => (string)$emailAddress),
-        ));
+        $client = new MailWizzApi_Http_Client([
+            'method' => MailWizzApi_Http_Client::METHOD_GET,
+            'url' => $this->getConfig()->getApiUrl('lists/subscribers/search-by-email-in-all-lists'),
+            'paramsGet' => ['EMAIL' => (string) $emailAddress],
+        ]);
 
         return $response = $client->request();
     }
@@ -309,25 +316,24 @@ class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
     /**
      * Search in a list by custom fields
      *
-     * @param string $listUid
-     * @param array $fields
-     * @param int $page
-     * @param int $perPage
-     *
+     * @param  string  $listUid
+     * @param  int  $page
+     * @param  int  $perPage
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
-    public function searchByCustomFields($listUid, array $fields = array(), $page = 1, $perPage = 10)
+    public function searchByCustomFields($listUid, array $fields = [], $page = 1, $perPage = 10)
     {
         $paramsGet = $fields;
-        $paramsGet['page']      = (int)$page;
-        $paramsGet['per_page']  = (int)$perPage;
-        
-        $client = new MailWizzApi_Http_Client(array(
-            'method'        => MailWizzApi_Http_Client::METHOD_GET,
-            'url'           => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers/search-by-custom-fields', (string)$listUid)),
-            'paramsGet'     => $paramsGet,
-        ));
+        $paramsGet['page'] = (int) $page;
+        $paramsGet['per_page'] = (int) $perPage;
+
+        $client = new MailWizzApi_Http_Client([
+            'method' => MailWizzApi_Http_Client::METHOD_GET,
+            'url' => $this->getConfig()->getApiUrl(sprintf('lists/%s/subscribers/search-by-custom-fields', (string) $listUid)),
+            'paramsGet' => $paramsGet,
+        ]);
 
         return $response = $client->request();
     }
@@ -335,15 +341,16 @@ class MailWizzApi_Endpoint_ListSubscribers extends MailWizzApi_Base
     /**
      * Create or update a subscriber in given list
      *
-     * @param string $listUid
-     * @param array $data
+     * @param  string  $listUid
+     * @param  array  $data
      * @return MailWizzApi_Http_Response
+     *
      * @throws Exception
      */
     public function createUpdate($listUid, $data)
     {
-        $emailAddress    = !empty($data['EMAIL']) ? $data['EMAIL'] : null;
-        $response        = $this->emailSearch($listUid, $emailAddress);
+        $emailAddress = ! empty($data['EMAIL']) ? $data['EMAIL'] : null;
+        $response = $this->emailSearch($listUid, $emailAddress);
 
         // the request failed.
         if ($response->getIsCurlError()) {
